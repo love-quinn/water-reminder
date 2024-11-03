@@ -9,6 +9,38 @@ import { useState } from "react";
 export default function Home() {
   const [value, setValue] = useState(0);
 
+  const handleNotify = () => {
+    if ("Notification" in window) {
+      if (Notification.permission === "granted") {
+        notify();
+      } else {
+        Notification.requestPermission().then((permission) => {
+          if (permission === "granted") {
+            notify();
+          } else {
+            console.error("Permissão para notificações foi negada");
+          }
+        });
+      }
+    } else {
+      console.error("Navegador não suporta notificações");
+    }
+  };
+
+  const notify = () => {
+    const notification = new Notification("Breaking:", {
+      body: `Celebrity Caught in Fresh Scandal`,
+      icon: "https://unsplash.it/400/400",
+      // vibrate: [300, 200, 300],
+    });
+
+    notification.addEventListener("click", () => {
+      window.open("https://www.openjavascript.com");
+    });
+
+    setTimeout(() => notification.close(), 3000);
+  };
+
   const handleIncrement = () => {
     setValue((prev) => (prev < 2000 ? prev + 200 : prev));
   };
@@ -32,6 +64,14 @@ export default function Home() {
         >
           <PlusIcon />
           200ml
+        </Button>
+
+        <Button
+          className="gap-1 "
+          onClick={handleNotify}
+        >
+          <PlusIcon />
+          Notify
         </Button>
       </div>
     </div>
