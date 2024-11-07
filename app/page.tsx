@@ -4,14 +4,18 @@ import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
 import GaugeCircle from "@/components/ui/gauge-circle";
 import { Separator } from "@/components/ui/separator";
-import { GlassWater, PlusIcon } from "lucide-react";
+import WaterRecordItem from "@/components/water-record";
+import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 
 export default function Home() {
   const imageUrl = `https://images.unsplash.com/photo-1548780607-46c78f38182d?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`;
   const [value, setValue] = useState(0);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
-  const bellSound = new Audio("/bell_ring.mp3");
+  const [waterRecords, setWaterRecords] = useState<
+    { amount: number; time: string }[]
+  >([]);
+  // const bellSound = new Audio("/bell_ring.mp3");
 
   const requestNotificationPermission = async (): Promise<boolean> => {
     if (!("Notification" in window)) {
@@ -25,24 +29,24 @@ export default function Home() {
     return permission === "granted";
   };
 
-  const playBellSoundThreeTimes = () => {
-    let playCount = 0;
+  // const playBellSoundThreeTimes = () => {
+  //   let playCount = 0;
 
-    const handlePlayEnd = () => {
-      playCount++;
+  //   const handlePlayEnd = () => {
+  //     playCount++;
 
-      if (playCount < 1) {
-        bellSound.play();
-      } else {
-        bellSound.removeEventListener("ended", handlePlayEnd);
-      }
-    };
+  //     if (playCount < 1) {
+  //       bellSound.play();
+  //     } else {
+  //       bellSound.removeEventListener("ended", handlePlayEnd);
+  //     }
+  //   };
 
-    if (bellSound) {
-      bellSound.play();
-      bellSound.addEventListener("ended", handlePlayEnd);
-    }
-  };
+  //   if (bellSound) {
+  //     bellSound.play();
+  //     bellSound.addEventListener("ended", handlePlayEnd);
+  //   }
+  // };
 
   const sendHydrationReminderNotification = () => {
     const notification = new Notification("Hora de beber água!", {
@@ -55,12 +59,21 @@ export default function Home() {
   const handleIncrement = async () => {
     setValue((prev) => (prev < 2000 ? prev + 200 : prev));
 
+    const currentTime = new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    setWaterRecords((prevRecords) => [
+      ...prevRecords,
+      { amount: 200, time: currentTime },
+    ]);
+
     if (await requestNotificationPermission()) {
       if (timeoutId) clearTimeout(timeoutId);
 
       const newTimeoutId = setTimeout(() => {
         sendHydrationReminderNotification();
-        playBellSoundThreeTimes();
+        // playBellSoundThreeTimes();
       }, 3600 * 1000);
 
       setTimeoutId(newTimeoutId);
@@ -98,20 +111,17 @@ export default function Home() {
           </Button>
         </div>
 
-        <div className="mt-12 flex w-1/3 flex-col gap-3 justify-between text-gray-500">
-          <h4 className="leading-none text-sm">Daily records</h4>
-          <Separator/>
+        <div className="mt-12 flex w-1/3 flex-col justify-between gap-3 text-gray-500">
+          <h4 className="text-sm leading-none">Daily records</h4>
+          <Separator />
 
-          <div className="flex justify-between mt-1">
-
-          <div className="flex items-center gap-1">
-            <GlassWater size={16} className="" />
-            <p className="text-xs">+200ml</p>
-          </div>
-
-          <p className="text-xs">9:40PM</p>
-          </div>
-
+          {waterRecords.map((record, index) => (
+            <WaterRecordItem
+              key={index}
+              amount={record.amount}
+              time={record.time}
+            />
+          ))}
         </div>
       </div>
     </div>
