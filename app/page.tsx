@@ -8,6 +8,7 @@ import WaterRecordItem from "@/components/water-record";
 import { PlusIcon, RotateCcw } from "lucide-react";
 import { useState } from "react";
 import { useDrinkStore } from "@/components/store/drink";
+import EditDrinkAmountButton from "@/components/edit-drink-amount";
 
 export default function Home() {
   const imageUrl = `https://images.unsplash.com/photo-1548780607-46c78f38182d?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`;
@@ -55,7 +56,7 @@ export default function Home() {
   };
 
   const handleIncrement = async () => {
-    const incrementAmount = 200;
+    const incrementAmount = store.incrementAmount;
 
     store.addDrink(incrementAmount);
 
@@ -72,9 +73,12 @@ export default function Home() {
 
   const handleReset = () => {
     store.resetDrinks();
-  }
+  };
 
-  const primaryColor = store.currentWaterDrunkAmount >= store.dailyGoal ? "rgb(34, 197, 94)" : "rgb(79, 70, 229)";
+  const primaryColor =
+    store.currentWaterDrunkAmount >= store.dailyGoal
+      ? "rgb(34, 197, 94)"
+      : "rgb(79, 70, 229)";
 
   return (
     <div className="flex h-screen w-full flex-col items-center">
@@ -92,7 +96,7 @@ export default function Home() {
             gaugePrimaryColor={primaryColor}
             gaugeSecondaryColor="rgba(0, 0, 0, 0.1)"
           />
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-col">
             <Button
               onClick={handleIncrement}
               className={`${
@@ -102,18 +106,20 @@ export default function Home() {
               } gap-1`}
             >
               <PlusIcon />
-              200ml
+              {store.incrementAmount}ml
             </Button>
-
-            <Button
-              variant={"destructive"}
-              onClick={handleReset}
-              className="px-3"
-              aria-label="reset"
-              title="Reset daily records"
-            >
-              <RotateCcw size={16} className="" />
-            </Button>
+            <div className="flex gap-2 justify-center">
+              <EditDrinkAmountButton/>
+              <Button
+                variant={"destructive"}
+                onClick={handleReset}
+                className="px-3"
+                aria-label="reset"
+                title="Reset daily records"
+              >
+                <RotateCcw size={16} className="" />
+              </Button>
+            </div>
           </div>
         </div>
 

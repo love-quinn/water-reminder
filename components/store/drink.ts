@@ -10,8 +10,10 @@ type Drink = {
 type DrinkStore = {
   dailyDrinks: Drink[];
   dailyGoal: number;
+  incrementAmount: number;
   currentWaterDrunkAmount: number; // Add this property to track the current amount drunk
   setDailyGoal: (goal: number) => void;
+  setIncrementAmount: (amount: number) => void;
   addDrink: (amount: number) => void;
   resetDrinks: () => void;  // Add a reset function for drinks and current amount
   setCurrentWaterDrunkAmount: (amount: number) => void;  // Add function to update current amount drunk
@@ -20,7 +22,9 @@ type DrinkStore = {
 export const useDrinkStore = create<DrinkStore>((set) => ({
   dailyDrinks: [],
   dailyGoal: 1000,
+  incrementAmount: 100,
   currentWaterDrunkAmount: 0,  // Initial value is 0
+  setIncrementAmount: (amount) => set({ incrementAmount: amount}),
   setDailyGoal: (goal) => set({ dailyGoal: goal }),
   addDrink: (amount) =>
     set((state) => ({
