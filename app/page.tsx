@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import WaterRecordItem from "@/components/water-record";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
+import { useDrinkStore } from "@/components/store/drink";
 
 export default function Home() {
   const imageUrl = `https://images.unsplash.com/photo-1548780607-46c78f38182d?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`;
@@ -15,6 +16,7 @@ export default function Home() {
   const [waterRecords, setWaterRecords] = useState<
     { amount: number; time: string }[]
   >([]);
+  const store = useDrinkStore();
   // const bellSound = new Audio("/bell_ring.mp3");
 
   const requestNotificationPermission = async (): Promise<boolean> => {
@@ -84,7 +86,7 @@ export default function Home() {
 
   return (
     <div className="flex h-screen w-full flex-col items-center">
-      <Header />
+      <Header dailyGoal={store.dailyGoal}/>
 
       {/* Center */}
       <div
@@ -92,7 +94,7 @@ export default function Home() {
       >
         <div className="mt-12 flex flex-none flex-col items-center justify-center gap-10">
           <GaugeCircle
-            max={2000}
+            max={store.dailyGoal}
             min={0}
             value={value}
             gaugePrimaryColor={primaryColor}

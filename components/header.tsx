@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Sun } from "lucide-react";
+import { Pencil, Sun } from "lucide-react";
 
 const currentDate = format(new Date(), "dd 'de' MMMM' de 'yyyy", {
   locale: ptBR,
@@ -19,7 +19,11 @@ const getGreeting = () => {
 };
 const greeting = getGreeting();
 
-const Header = () => {
+interface HeaderProps {
+  dailyGoal: number
+}
+
+const Header = ({dailyGoal}: HeaderProps) => {
   return (
     <div className="absolute top-12 flex gap-2 justify-center px-12 w-full flex-col">
       <div>
@@ -30,10 +34,16 @@ const Header = () => {
       </div>
       <div>
         <h1 className="text">{currentDate}</h1>
+        <div className="flex gap-1">
         <p className="text-sm">
-          Daily Goal{" "}
-          <span className="font-semibold text-gray-800">2000 ml</span>
+          Daily Goal
         </p>
+
+          <button className="flex gap-1 items-center hover:text-indigo-500 transition-transform">
+          <p className="font-semibold text-sm ">{dailyGoal} ml</p>
+          <Pencil size={14}/>
+          </button>
+        </div>
       </div>
     </div>
   );
