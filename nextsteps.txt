@@ -1,5 +1,6 @@
-generate favicon
-update favicon
+generate favicon✅
+update favicon✅
+Add badge indicating remaining timer for next drink
 add local storage
 add strike flame counter
 add login with google to save progress

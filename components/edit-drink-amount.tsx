@@ -58,7 +58,7 @@ const EditDrinkAmountButton = () => {
               <div className="flex flex-col gap-3">
                 <Input
                   id="drinkAmount"
-                  defaultValue={store.dailyGoal}
+                  defaultValue={store.incrementAmount}
                   type="number"
                   className="col-span-3"
                   onChange={handleDrinkAmountChange}
