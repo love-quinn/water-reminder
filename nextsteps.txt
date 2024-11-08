@@ -1,3 +1,5 @@
+generate favicon
+update favicon
 add local storage
 add strike flame counter
 add login with google to save progress
