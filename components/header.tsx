@@ -4,7 +4,7 @@ import {
   DialogTrigger,
 } from "@radix-ui/react-dialog";
 import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import { Pencil, Sun } from "lucide-react";
 import {
   DialogContent,
@@ -18,18 +18,18 @@ import { Button } from "./ui/button";
 import { ChangeEvent, useState } from "react";
 
 const currentDate = format(new Date(), "dd 'de' MMMM' de 'yyyy", {
-  locale: ptBR,
+  locale: enUS,
 });
 
 const getGreeting = () => {
   const currentHour = new Date().getHours();
 
   if (currentHour < 12) {
-    return "Bom dia";
+    return "Good Morning";
   } else if (currentHour < 18) {
-    return "Boa tarde";
+    return "Good Afternoon";
   } else {
-    return "Boa noite";
+    return "Good Evening";
   }
 };
 const greeting = getGreeting();
